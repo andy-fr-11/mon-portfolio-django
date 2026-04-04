@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+{% if profile %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-7" data-aos="fade-right">
+                <h1 class="display-1 fw-bold mb-3">Anderson Kontchou</h1>
+                <h2 class="h3 text-primary mb-4">{{ profile.title }}</h2>
+                <p class="lead mb-4">{{ profile.bio|truncatewords:50 }}</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'contact:contact' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>Me contacter
+                    </a>
+                    {% if profile.cv_file %}
+                    <a href="{{ profile.cv_file.url }}" class="btn btn-outline-primary btn-lg" download>
+                        <i class="fas fa-download me-2"></i>Télécharger CV
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5 text-center" data-aos="fade-left">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="profile-image img-fluid rounded-circle">
+                {% else %}
+                    <div class="profile-placeholder rounded-circle mx-auto">
+                        <i class="fas fa-user fa-5x"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Compétences Section -->
+<section class="skills-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up">
+            <i class="fas fa-code me-2"></i>Mes Compétences
+        </h2>
+        {% for category in skill_categories %}
+        <div class="mb-5" data-aos="fade-up">
+            <h3 class="mb-4">
+                <i class="{{ category.icon }} me-2"></i>{{ category.name }}
+            </h3>
+            <div class="row">
+                {% for skill in category.skills.all %}
+                <div class="col-md-6 mb-3">
+                    <div class="skill-item">
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong>{{ skill.name }}</strong>
+                            <span class="text-primary">{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                        <small class="text-muted">{{ skill.years_experience }} ans d'expérience</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Expérience Section -->
+<section class="experience-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up">
+            <i class="fas fa-briefcase me-2"></i>Expérience Professionnelle
+        </h2>
+        <div class="row">
+            {% for experience in experiences %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card experience-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ experience.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ experience.company }} - {{ experience.location }}</h6>
+                        <p class="card-text">{{ experience.description|truncatewords:30 }}</p>
+                        <small class="text-muted">
+                            {% if experience.current %}
+                                Depuis {{ experience.start_date|date:"M Y" }}
+                            {% else %}
+                                {{ experience.start_date|date:"M Y" }} - {{ experience.end_date|date:"M Y" }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Éducation Section -->
+<section class="education-section bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up">
+            <i class="fas fa-graduation-cap me-2"></i>Éducation
+        </h2>
+        <div class="row">
+            {% for education in educations %}
+            <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card education-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ education.degree }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ education.institution }} - {{ education.location }}</h6>
+                        {% if education.description %}
+                        <p class="card-text">{{ education.description|truncatewords:20 }}</p>
+                        {% endif %}
+                        <small class="text-muted">
+                            {% if education.current %}
+                                Depuis {{ education.start_date|date:"M Y" }}
+                            {% else %}
+                                {{ education.start_date|date:"M Y" }} - {{ education.end_date|date:"M Y" }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Projets Section -->
+<section class="projects-section bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up">
+            <i class="fas fa-star me-2"></i>Projets à la une
+        </h2>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card project-card h-100">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description|striptags|truncatewords:20 }}</p>
+                        <div class="technologies mb-3">
+                            <small class="text-muted">{{ project.technologies }}</small>
+                        </div>
+                        <a href="{% url 'projects:detail' project.id %}" class="btn btn-primary">
+                            Voir le projet <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'projects:list' %}" class="btn btn-outline-primary btn-lg">
+                Voir tous les projets <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
