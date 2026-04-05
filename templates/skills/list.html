@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="skills-list-section py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line me-2"></i>Compétences
+            </h2>
+            <p class="lead text-muted">Toutes mes compétences techniques et fonctionnelles regroupées par catégorie.</p>
+        </div>
+        {% for category in skill_categories %}
+        <div class="mb-5" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="me-3">{{ category.name }}</h3>
+                <small class="text-muted">{{ category.skills.count }} compétences</small>
+            </div>
+            <div class="row">
+                {% for skill in category.skills.all %}
+                <div class="col-md-6 mb-3">
+                    <div class="skill-item">
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong>{{ skill.name }}</strong>
+                            <span class="text-primary">{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                        <small class="text-muted">{{ skill.years_experience }} ans d'expérience</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Aucune compétence disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

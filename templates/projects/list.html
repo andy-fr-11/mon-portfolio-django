@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="projects-list-section py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">
+                <i class="fas fa-project-diagram me-2"></i>Projets
+            </h2>
+            <p class="lead text-muted">Une sélection de projets réalisés avec soin et orientés résultats.</p>
+        </div>
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card project-card h-100">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text mb-3">{{ project.description|striptags|truncatewords:25 }}</p>
+                        <div class="mb-3">
+                            <strong>Technologies :</strong>
+                            <p class="mb-0 text-muted">{{ project.technologies }}</p>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="{% url 'projects:detail' project.id %}" class="btn btn-primary">
+                                Voir le projet <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center text-muted">Aucun projet n'est disponible pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import SkillCategory
 
 def skill_list(request):
-    return HttpResponse("Liste des compétences - En construction")
+    skill_categories = SkillCategory.objects.prefetch_related('skills')
+    return render(request, 'skills/list.html', {'skill_categories': skill_categories})

@@ -6,7 +6,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ['name', 'title', 'email', 'phone']
     fieldsets = (
         ('Informations personnelles', {
-            'fields': ('name', 'title', 'bio', 'email', 'phone', 'location')
+            'fields': ('name', 'title', 'bio', 'email', 'phone', 'location', 'nationality', 'birth_date', 'marital_status')
         }),
         ('Médias', {
             'fields': ('profile_image', 'cv_file')

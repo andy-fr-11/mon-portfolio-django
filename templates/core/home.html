@@ -2,22 +2,53 @@
 {% load static %}
 
 {% block content %}
-<!-- Hero Section -->
 {% if profile %}
 <section class="hero-section">
     <div class="container">
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-7" data-aos="fade-right">
-                <h1 class="display-1 fw-bold mb-3">Anderson Kontchou</h1>
+                <span class="badge bg-primary mb-3">Profil professionnel</span>
+                <h1 class="display-1 hero-name fw-bold mb-3">{{ profile.name }}</h1>
                 <h2 class="h3 text-primary mb-4">{{ profile.title }}</h2>
-                <p class="lead mb-4">{{ profile.bio|truncatewords:50 }}</p>
-                <div class="d-flex gap-3">
+                <p class="lead mb-4">{{ profile.bio }}</p>
+
+                <div class="row mb-4">
+                    <div class="col-sm-6 mb-3">
+                        <div class="info-card p-3 rounded shadow-sm bg-white text-dark">
+                            <strong>Localisation</strong>
+                            <p class="mb-0">{{ profile.location }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="info-card p-3 rounded shadow-sm bg-white text-dark">
+                            <strong>Nationalité</strong>
+                            <p class="mb-0">{{ profile.nationality }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-6 mb-3">
+                        <div class="info-card p-3 rounded shadow-sm bg-white text-dark">
+                            <strong>Email</strong>
+                            <p class="mb-0">{{ profile.email }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="info-card p-3 rounded shadow-sm bg-white text-dark">
+                            <strong>Téléphone</strong>
+                            <p class="mb-0">{{ profile.phone }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 align-items-center">
                     <a href="{% url 'contact:contact' %}" class="btn btn-primary btn-lg">
                         <i class="fas fa-paper-plane me-2"></i>Me contacter
                     </a>
                     {% if profile.cv_file %}
                     <a href="{{ profile.cv_file.url }}" class="btn btn-outline-primary btn-lg" download>
-                        <i class="fas fa-download me-2"></i>Télécharger CV
+                        <i class="fas fa-download me-2"></i>Télécharger mon CV
                     </a>
                     {% endif %}
                 </div>
@@ -40,7 +71,7 @@
 <section class="skills-section py-5">
     <div class="container">
         <h2 class="text-center mb-5 section-title" data-aos="fade-up">
-            <i class="fas fa-code me-2"></i>Mes Compétences
+            <i class="fas fa-code me-2"></i>Compétences clés
         </h2>
         {% for category in skill_categories %}
         <div class="mb-5" data-aos="fade-up">
@@ -72,7 +103,7 @@
 <section class="experience-section py-5">
     <div class="container">
         <h2 class="text-center mb-5 section-title" data-aos="fade-up">
-            <i class="fas fa-briefcase me-2"></i>Expérience Professionnelle
+            <i class="fas fa-briefcase me-2"></i>Expérience professionnelle
         </h2>
         <div class="row">
             {% for experience in experiences %}
@@ -101,7 +132,7 @@
 <section class="education-section bg-light py-5">
     <div class="container">
         <h2 class="text-center mb-5 section-title" data-aos="fade-up">
-            <i class="fas fa-graduation-cap me-2"></i>Éducation
+            <i class="fas fa-graduation-cap me-2"></i>Formation
         </h2>
         <div class="row">
             {% for education in educations %}
@@ -128,6 +159,47 @@
     </div>
 </section>
 
+<!-- Compétences transversales -->
+<section class="skills-overview-section py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title"><i class="fas fa-lightbulb me-2"></i>Atouts & Langues</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="info-card p-4 rounded shadow-sm bg-white text-dark h-100">
+                    <h5>Soft skills</h5>
+                    <ul class="mb-0">
+                        <li>Esprit d’analyse et résolution de problèmes</li>
+                        <li>Gestion du temps et organisation</li>
+                        <li>Travail en équipe</li>
+                        <li>Pensée critique et autonomie</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="info-card p-4 rounded shadow-sm bg-white text-dark h-100">
+                    <h5>Langues</h5>
+                    <ul class="mb-0">
+                        <li>Français : Langue principale</li>
+                        <li>Anglais : Pratique</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="info-card p-4 rounded shadow-sm bg-white text-dark h-100">
+                    <h5>Centres d’intérêt</h5>
+                    <ul class="mb-0">
+                        <li>Sport (Basket-ball)</li>
+                        <li>Lecture</li>
+                        <li>Développement personnel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Projets Section -->
 <section class="projects-section bg-light py-5">
     <div class="container">
@@ -139,7 +211,7 @@
             <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
                 <div class="card project-card h-100">
                     {% if project.image %}
-                        <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ project.title }}</h5>
